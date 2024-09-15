@@ -1,0 +1,26 @@
+{
+    "name": "alanvdb/app",
+    "description": "Personal app system",
+    "type": "library",
+    "require": {
+        "alanvdb/dependency-container": "^0.1.0",
+        "alanvdb/router": "^0.3.0",
+        "guzzlehttp/psr7": "^2.7",
+        "psr/http-message": "^2.0",
+        "alanvdb/renderer": "^0.1.0",
+        "alanvdb/orm": "^0.1.0",
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AlanVdb\\App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "alanvdb",
+            "email": "alanvdb.coder@gmail.com"
+        }
+    ]
+}
