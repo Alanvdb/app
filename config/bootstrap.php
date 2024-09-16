@@ -20,8 +20,8 @@ use AlanVdb\Router\Definition\UriGeneratorInterface;
 use AlanVdb\Router\Definition\RequestMatcherInterface;
 use AlanVdb\Router\Factory\RouterFactory;
 
-use AlanVdb\ORM\Manager\Factory\EntityManagerFactory;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use AlanVdb\ORM\Manager\Factory\DoctrineEntityManagerFactory;
 
 use AlanVdb\Renderer\Definition\RendererInterface;
 use AlanVdb\Renderer\Factory\PhpRendererFactory;
@@ -36,7 +36,7 @@ require ROOT . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.
 
 // .env file loading
 
-(new DotEnvLoaderFactory())->createDotEnvLoader()->loadFile(trim(DIRECTORY_SEPARATOR, realpath(ROOT)));
+(new DotEnvLoaderFactory())->createDotEnvLoader()->loadFile(ltrim(DIRECTORY_SEPARATOR, realpath(ROOT)));
 
 
 
@@ -125,7 +125,7 @@ $container->add(UriGeneratorInterface::class, function($c) {
 
 // ENTITY MANAGER
 
-$container->add(EntityManager::class, function()
+$container->add(EntityManagerInterface::class, function()
 {
     $dbDriver = $_ENV['DB_DRIVER'];
 
@@ -141,7 +141,7 @@ $container->add(EntityManager::class, function()
     }
     $dbParams['driver'] = $dbDriver;
 
-    return (new EntityManagerFactory())->createEntityManager(
+    return (new DoctrineEntityManagerFactory())->createEntityManager(
         $dbParams,
         $_ENV['ENTITY_DIRECTORIES'],
         $_ENV['ORM_PROXY_DIRECTORY'],

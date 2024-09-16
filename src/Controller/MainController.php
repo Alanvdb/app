@@ -8,11 +8,13 @@ class MainController extends AbstractController
 {
     protected function setup()
     {
-        $this->renderer->addNamespace('main', __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'templates');
+        $this->renderer->addNamespace('main', __DIR__.'/../../assets/templates');
+        $this->renderer->addNamespace('layout', __DIR__.'/../../assets/templates/layout');
     }
 
     public function showHome() : ResponseInterface
     {
+        $stream = $this->streamFactory->createStream('');
         return $this->createResponse($this->render('main.home'));
     }
 }

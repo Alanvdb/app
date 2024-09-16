@@ -12,11 +12,11 @@ use AlanVdb\Router\Definition\UriGeneratorInterface;
 
 abstract class AbstractController
 {
-    protected $request;
-    protected $renderer;
-    protected $responseFactory;
-    protected $streamFactory;
-    protected $uriGenerator;
+    protected ServerRequestInterface   $request;
+    protected RendererInterface        $renderer;
+    protected ResponseFactoryInterface $responseFactory;
+    protected StreamFactoryInterface   $streamFactory;
+    protected UriGeneratorInterface    $uriGenerator;
 
     public function __construct(
         ServerRequestInterface   $request,
