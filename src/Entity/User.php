@@ -2,9 +2,6 @@
 
 namespace AlanVdb\App\Entity;
 
-use AlanVdb\ORM\Entity\AbstractEntity;
-use AlanVdb\App\Validator\StringLengthValidator;
-
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Column;
@@ -15,42 +12,29 @@ use InvalidArgumentException;
 #[Table(name: 'users')]
 class User extends AbstractEntity
 {
-    #[Column(type: 'string', length: 32)]
-    protected ?string $username = null;
+    #[Column(type: 'string', length: 32, unique: true)]
+    public ?string $username = null;
 
-    #[Column(type: 'string', length: 255)]
-    protected ?string $email = null;
+    #[Column(type: 'string', length: 255, unique: true)]
+    public ?string $email = null;
 
-    /**
-     * @return string|null Username
-     */
-    public function getUsername() : ?string
+    #[Column(type: 'string', length: 2000)]
+    public ?string $password = null;
+
+    public function __construct()
     {
-        return $this->username;
-    }
-
-    /**
-     * @param string $username
-     * @throws InvalidArgumentException
-     */
-    public function setUsername(string $username) : void
-    {
-        $nameLength = strlen($username);
-        if ($nameLength < 4) {
-            throw new InvalidArgumentException('Username must contain 4 characters minimum.');
-        } elseif ($nameLength > 32) {
-            throw new InvalidArgumentException('Username must contain 32 characters maximum.');
-        }
-        $this->username = $username;
-    }
-
-    public function getEmail() : ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email) : void
-    {
-        $this->email = $email;
+        $this->validators = [
+            'username' => [
+                $this->validatorFactory->createStringLengthValidator(4, 32),
+                $this->validatorFactory->createRegexValidator('`^[a-zA-Z0-9\-_]+$`', 'can contain letters, digits, hyphen and underscore')
+            ],
+            'email' => [
+                $this->validatorFactory->createEmailValidator(),
+                $this->validatorFactory->createStringLengthValidator(8, 255)
+            ],
+            'password' => [
+                $this->validatorFactory->createStringLengthValidator(8, 2000)
+            ]
+        ];
     }
 }

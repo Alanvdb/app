@@ -10,7 +10,7 @@ class StringLengthValidator extends AbstractValidator implements ValidatorInterf
     protected int $min;
     protected int $max;
     
-    public function __construct(int $min, int $max)
+    public function __construct(int $min, int $max, string $errorMessage = 'must be {min} to {max} characters long')
     {
         if ($min < 0) {
             throw new InvalidValidatorParamProvided('Minimum cannot be lower than 0.');
@@ -19,16 +19,13 @@ class StringLengthValidator extends AbstractValidator implements ValidatorInterf
         }
         $this->min = $min;
         $this->max = $max;
+        $errorMessage = str_replace('{min}', $this->min, $errorMessage);
+        $this->errorMessage = str_replace('{max}', $this->max, $errorMessage);
     }
 
     public function validate(string $value) : bool
     {
         $length = strlen($value);
-
-        if ($length < $this->min || $length > $this->max) {
-            $this->errors[] = "must be {$this->min} to {$this->max} characters long";
-            return false;
-        }
-        return true;
+        return $length >= $this->min || $length <= $this->max;
     }
 }

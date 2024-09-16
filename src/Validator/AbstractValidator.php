@@ -6,11 +6,11 @@ use InvalidArgumentException;
 
 abstract class AbstractValidator implements ValidatorInterface
 {
-    protected $errors = [];
+    protected string $errorMessage;
 
-    public function getErrors() : array
+    public function getErrorMessage() : string
     {
-        return $this->errors;
+        return $this->error;
     }
 
     abstract public function validate(string $value) : bool;
