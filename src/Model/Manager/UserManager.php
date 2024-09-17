@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AlanVdb\App\Manager;
+namespace AlanVdb\Model\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AlanVdb\App\Validator;
+namespace AlanVdb\Model\Validator;
 
 use InvalidArgumentException;
 

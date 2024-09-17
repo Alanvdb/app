@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AlanVdb\App\Entity;
+namespace AlanVdb\Model\Entity;
 
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;

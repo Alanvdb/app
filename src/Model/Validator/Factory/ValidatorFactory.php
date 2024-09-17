@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace AlanVdb\App\Validator\Factory;
+namespace AlanVdb\Model\Validator\Factory;
 
-use AlanVdb\App\Validator\Definition\ValidatorFactoryInterface;
-use AlanVdb\App\Validator\Definition\ValidatorInterface;
+use AlanVdb\Model\Validator\Definition\ValidatorFactoryInterface;
+use AlanVdb\Model\Validator\Definition\ValidatorInterface;
 
-use AlanVdb\App\Validator\StringLengthValidator;
-use AlanVdb\App\Validator\EmailValidator;
+use AlanVdb\Model\Validator\StringLengthValidator;
+use AlanVdb\Model\Validator\EmailValidator;
 
 class ValidatorFactory implements ValidatorFactoryInterface
 {

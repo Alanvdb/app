@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AlanVdb\App\Validator;
+namespace AlanVdb\Model\Validator;
 
-use AlanVdb\App\Validator\Definition\ValidatorInterface;
+use AlanVdb\Model\Validator\Definition\ValidatorInterface;
 
 class EmailValidator extends AbstractValidator implements ValidatorInterface
 {

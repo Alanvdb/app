@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AlanVdb\App\Validator\Exception;
+namespace AlanVdb\Model\Validator\Exception;
 
-use AlanVdb\App\Validator\Definition\ValidatorExceptionInterface;
+use AlanVdb\Model\Validator\Definition\ValidatorExceptionInterface;
 use InvalidArgumentException;
 
 class InvalidValidatorParamProvided 

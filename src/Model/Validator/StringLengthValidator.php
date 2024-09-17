@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace AlanVdb\App\Validator;
+namespace AlanVdb\Validator;
 
-use AlanVdb\App\Validator\Definition\ValidatorInterface;
-use AlanVdb\App\Validator\Exception\InvalidValidatorParamProvided;
+use AlanVdb\Model\Validator\Definition\ValidatorInterface;
+use AlanVdb\Model\Validator\Exception\InvalidValidatorParamProvided;
 
 class StringLengthValidator extends AbstractValidator implements ValidatorInterface
 {

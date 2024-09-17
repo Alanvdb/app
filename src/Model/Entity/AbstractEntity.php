@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AlanVdb\App\Entity;
+namespace AlanVdb\Model\Entity;
 
 abstract class AbstractEntity extends \AlanVdb\ORM\Entity\AbstractEntity
 {

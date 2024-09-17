@@ -19,26 +19,22 @@ use AlanVdb\Router\Definition\RouteFactoryInterface;
 use AlanVdb\Router\Definition\UriGeneratorInterface;
 use AlanVdb\Router\Definition\RequestMatcherInterface;
 use AlanVdb\Router\Factory\RouterFactory;
+use AlanVdb\Router\RouteCollector;
 
 use Doctrine\ORM\EntityManagerInterface;
 use AlanVdb\ORM\Manager\Factory\DoctrineEntityManagerFactory;
 
-use AlanVdb\Renderer\Definition\RendererInterface;
-use AlanVdb\Renderer\Factory\PhpRendererFactory;
+use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
+use Twig\Environment             as TwigEnvironment;
+
+use AlanVdb\App\Configuration\Exception\InvalidConfigurationProvided;
 
 
-const ROOT          = __DIR__ . DIRECTORY_SEPARATOR . '..';
-const ROUTES_CONFIG = 'routes.php';
+const ROOT = __DIR__ . DIRECTORY_SEPARATOR . '..';
 
 require ROOT . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-
-
-// .env file loading
-
-(new DotEnvLoaderFactory())->createDotEnvLoader()->loadFile(ltrim(DIRECTORY_SEPARATOR, realpath(ROOT)));
-
-
+(new DotEnvLoaderFactory())->createDotEnvLoader()->load(ROOT);
 
 // CONTAINER
 
@@ -89,28 +85,8 @@ $container->add(RouterFactory::class, function() {
 });
 
 $container->add(RouteCollection::class, function($c) {
-    $factory = $c->get(RouterFactory::class);
-    $routeCollection = $factory->createRouteCollection();
-    $routes = require ROUTES_CONFIG;
-
-    foreach ($routes as $route) {
-
-        $routeCollection->add($route[0], function() use($factory, $route, $c)
-        {
-            return $factory->createRoute($route[0], $route[1], $route[2], function($args) use($route, $c) {
-                $controller = new $route[3](
-                    $c->get(ServerRequestInterface::class),
-                    $c->get(RendererInterface::class),
-                    $c->get(HttpFactory::class),
-                    $c->get(HttpFactory::class),
-                    $c->get(UriGeneratorInterface::class)
-                );
-                $method = $route[4];
-                return $controller->$method($args);
-            });
-        });
-    }
-    return $routeCollection;
+    $collector = new RouteCollector($c);
+    $routes = $collector->collectRoutes(require ROOT . DIRECTORY_SEPARATOR . $_ENV['ROUTES_CONFIG']);
 });
 
 $container->add(RequestMatcherInterface::class, function($c) {
@@ -127,7 +103,7 @@ $container->add(UriGeneratorInterface::class, function($c) {
 
 $container->add(EntityManagerInterface::class, function()
 {
-    $dbDriver = $_ENV['DB_DRIVER'];
+    $dbDriver = 'pdo_' . $_ENV['DB_DRIVER'];
 
     if ($dbDriver === 'pdo_sqlite') {
         $dbParams = ['path' => $_ENV['DB_PATH']];
@@ -143,9 +119,9 @@ $container->add(EntityManagerInterface::class, function()
 
     return (new DoctrineEntityManagerFactory())->createEntityManager(
         $dbParams,
-        $_ENV['ENTITY_DIRECTORIES'],
-        $_ENV['ORM_PROXY_DIRECTORY'],
-        $_ENV['ORM_PROXY_NAMESPACE'],
+        explode(',', $_ENV['ENTITY_DIRECTORIES']),
+        $_ENV['MODEL_PROXY_DIRECTORY'],
+        $_ENV['MODEL_PROXY_NAMESPACE'],
         boolval($_ENV['DEBUG_MODE'])
     );
 });
@@ -154,6 +130,12 @@ $container->add(EntityManagerInterface::class, function()
 
 // RENDERER
 
-$container->add(RendererInterface::class, function() {
-    return (new PhpRendererFactory())->createPhpRenderer();
+$container->add(TwigEnvironment::class, function() {
+
+    if (!array_key_exists('TEMPLATES_DIRECTORY', $_ENV) )
+
+    $loader = new TwigFilesystemLoader($_ENV['TEMPLATES_DIRECTORY']);
+    return new TwigEnvironment($loader, [
+        'cache' => $_ENV['RENDERER_CACHE_DIRECTORY'],
+    ]);
 });

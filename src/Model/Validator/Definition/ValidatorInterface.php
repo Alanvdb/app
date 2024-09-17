@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AlanVdb\App\Validator\Definition;
+namespace AlanVdb\Model\Validator\Definition;
 
 interface ValidatorInterface
 {

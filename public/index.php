@@ -32,6 +32,8 @@ foreach ($response->getHeaders() as $name => $values) {
 }
 $body = $response->getBody();
 
+//var_dump((string) $body);
+
 while (!$body->eof()) {
     echo $body->read(1024);
 }

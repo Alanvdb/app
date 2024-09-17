@@ -4,5 +4,5 @@ namespace AlanVdb\App\Configuration\Definition;
 
 interface DotEnvLoaderInterface
 {
-    public function loadFile(string $dotEnvFile);
+    public function load(string $root) : void;
 }
