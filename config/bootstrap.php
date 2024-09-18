@@ -4,6 +4,8 @@ namespace App;
 
 use AlanVdb\App\Configuration\Factory\DotEnvLoaderFactory;
 use AlanVdb\Dispatcher\Factory\DispatcherFactory;
+use AlanVdb\Middleware\RouterMiddleware;
+use AlanVdb\Middleware\ModuleLoaderMiddleware;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
@@ -16,6 +18,7 @@ use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\ServerRequest;
 
 use AlanVdb\Router\Factory\RouterFactory;
+
 
 use Doctrine\ORM\EntityManagerInterface;
 use AlanVdb\ORM\Manager\Factory\DoctrineEntityManagerFactory;
@@ -30,25 +33,10 @@ require ROOT . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.
 
 (new DotEnvLoaderFactory())->createDotEnvLoader()->load(ROOT);
 
-// ROUTER
-$request = ServerRequest::fromGlobals();
-$httpFactory = new HttpFactory();
-$routerFactory = new RouterFactory();
 
-// ROUTES
-$routeParams = require 'routes.php';
-$routes = [];
-
-foreach ($routeParams as $params) {
-    $routes[] = $routerFactory->createRoute(...$params);
-}
-$routeIterator = $routerFactory->createRouteIterator(...$routes);
-
-// DISPATCHING
-$matcher = $routerFactory->createRequestMatcher($routeIterator);
-$route   = $matcher->matchRequest($request);
 
 // DOCTRINE
+
 $dbDriver = 'pdo_' . $_ENV['DB_DRIVER'];
 
 if ($dbDriver === 'pdo_sqlite') {
@@ -71,22 +59,31 @@ $entityManager = (new DoctrineEntityManagerFactory())->createEntityManager(
     boolval($_ENV['DEBUG_MODE'])
 );
 
+
+
 // TWIG
+
 $twigLoader = new TwigFilesystemLoader($_ENV['TEMPLATES_DIRECTORY']);
-$twig = new TwigEnvironment($twigLoader, [
+$twig       = new TwigEnvironment($twigLoader, [
     'cache' => $_ENV['RENDERER_CACHE_DIRECTORY']
 ]);
 
-// RESPONSE
-list($controller, $method) = $route->getTarget();
-$response = (new $controller(
-    $request,
-    $httpFactory,
-    $httpFactory,
-    $routerFactory->createUriGenerator($routeIterator),
-    $entityManager,
-    $twig
-))->$method($route->getParams());
+
+
+// DISPATCH
+
+$request       = ServerRequest::fromGlobals();
+$httpFactory   = new HttpFactory();
+$routerFactory = new RouterFactory();
+
+$dispatcher = (new DispatcherFactory())->createDispatcher([
+    new RouterMiddleware(require 'routes.php', $routerFactory),
+    new ModuleLoaderMiddleware($httpFactory, $httpFactory, $entityManager, $twig)
+]);
+$response = $dispatcher->handle($request);
+
+
+// EMIT RESPONSE
 
 http_response_code($response->getStatusCode());
 

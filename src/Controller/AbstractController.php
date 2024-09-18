@@ -17,7 +17,6 @@ abstract class AbstractController
         protected ServerRequestInterface   $request,
         protected ResponseFactoryInterface $responseFactory,
         protected StreamFactoryInterface   $streamFactory,
-        protected UriGeneratorInterface    $uriGenerator,
         protected EntityManagerInterface   $entityManager,
         protected TwigEnvironment          $twig
     ) {}
