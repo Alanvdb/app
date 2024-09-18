@@ -6,23 +6,10 @@ use AlanVdb\App\Configuration\Factory\DotEnvLoaderFactory;
 use AlanVdb\Dispatcher\Factory\DispatcherFactory;
 use AlanVdb\Middleware\RouterMiddleware;
 use AlanVdb\Middleware\ModuleLoaderMiddleware;
-
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ServerRequestFactoryInterface;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Http\Message\UploadedFileFactoryInterface;
-use Psr\Http\Message\UriFactoryInterface;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\ServerRequest;
-
 use AlanVdb\Router\Factory\RouterFactory;
-
-
-use Doctrine\ORM\EntityManagerInterface;
 use AlanVdb\ORM\Manager\Factory\DoctrineEntityManagerFactory;
-
 use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 use Twig\Environment             as TwigEnvironment;
 
