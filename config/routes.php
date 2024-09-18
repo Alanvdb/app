@@ -2,9 +2,9 @@
 
 namespace App;
 
-use AlanVdb\App\Controller\MainController;
+use AlanVdb\Controller\MainController;
 
 return [
-    ['home', 'GET', '/', MainController::class, 'home'],
-    ['login', 'GET|POST', '/login', MainController::class, 'login'],
+    ['home', 'GET', '/', [MainController::class, 'home']],
+    ['login', 'GET|POST', '/login', [MainController::class, 'login']],
 ];

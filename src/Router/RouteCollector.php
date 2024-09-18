@@ -3,12 +3,11 @@
 namespace AlanVdb\Router;
 
 use AlanVdb\Router\Definition\RouteCollectorInterface;
-use Psr\Container\ContainerInterface;
+use AlanVdb\Router\RouteCollection;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use AlanVdb\Router\Definition\UriGeneratorInterface;
-use AlanVdb\Router\Definition\RouteCollectionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 use AlanVdb\Router\Factory\RouterFactory;
@@ -18,12 +17,14 @@ use AlanVdb\Router\Exception\InvalidRouteConfiguration;
 
 class RouteCollector implements RouteCollectorInterface
 {
-    protected ContainerInterface $container;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
+    public function __construct(
+        protected RouteCollection $routeCollection,
+        protected ServerRequestInterface $request,
+        protected ResponseFactoryInterface $responseFactory,
+        protected StreamFactoryInterface $streamFactory,
+        protected UriGeneratorInterface $uriGenerator,
+        protected EntityManagerInterface $entityManager
+    ) {}
 
     /**
      * @param array $routes
@@ -32,17 +33,15 @@ class RouteCollector implements RouteCollectorInterface
      *   ['login', 'GET|POST', '/login', MainController::class, 'login'],
      * ]
      */
-    public function collectRoutes(array $routeParams) : RouteCollectionInterface
+    public function collectRoutes(array $routeParams) : RouteCollection
     {
-        $routeCollection = (new RouterFactory())->createRouteCollection();
-
         foreach ($routeParams as $route) {
 
             if (!is_array($route)) {
                 throw new InvalidRouteConfiguration("Routes configuration file must return an array of Route params.");
             }
     
-            $routeCollection->add($route[0], function() use($route)
+            $this->routeCollection->add($route[0], function() use($route)
             {
                 return (new RouterFactory())->createRoute($route[0], $route[1], $route[2], function($args) use($route) {
                     $controller = new $route[3](
@@ -57,6 +56,6 @@ class RouteCollector implements RouteCollectorInterface
                 });
             });
         }
-        return $routeCollection;
+        return $this->routeCollection;
     }
 }

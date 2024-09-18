@@ -2,6 +2,8 @@
 
 namespace AlanVdb\Router\Definition;
 
+use AlanVdb\Router\RouteCollection;
+
 interface RouteCollectorInterface
 {
     /**
@@ -11,7 +13,7 @@ interface RouteCollectorInterface
      *   ['home', 'GET', '/', MainController::class, 'home'],
      *   ['login', 'GET|POST', '/login', MainController::class, 'login'],
      * ]
-     * @return RouteCollectionInterface Loaded route collection
+     * @return RouteCollectionLoaded route collection
      */
-    public function collectRoutes(array $routes) : RouteCollectionInterface;
+    public function collectRoutes(array $routes) : RouteCollection;
 }
