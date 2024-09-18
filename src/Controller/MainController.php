@@ -9,12 +9,11 @@ class MainController extends AbstractController
 {
     public function home() : ResponseInterface
     {
-
-        return $this->createResponse('Hello world !');
+        return $this->createResponse($this->twig->render('home.twig.php'));
     }
 
     public function login() : ResponseInterface
     {
-        return $this->createResponse($this->twig->render('home'));
+        return $this->createResponse($this->twig->render('login.twig.php'));
     }
 }
