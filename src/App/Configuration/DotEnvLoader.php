@@ -19,7 +19,7 @@ class DotEnvLoader implements DotEnvLoaderInterface
         'MODEL_PROXY_NAMESPACE',
         'MODEL_PROXY_DIRECTORY',
         'TEMPLATES_DIRECTORY',
-        'RENDERER_CACHE_DIRECTORY'
+        'ACTIVATE_TEMPLATE_CACHE'
     ];
 
     protected const DB_DRIVER_PARAMS = [
@@ -50,6 +50,12 @@ class DotEnvLoader implements DotEnvLoaderInterface
         foreach (self::DB_DRIVER_PARAMS[$_ENV['DB_DRIVER']] as $varName) {
             if (!array_key_exists($varName, $_ENV)) {
                 throw new InvalidConfigurationProvided("Missing .env parameter : '$varName'.");
+            }
+        }
+
+        if (filter_var($_ENV['ACTIVATE_TEMPLATE_CACHE'], FILTER_VALIDATE_BOOLEAN)) {
+            if (!array_key_exists('RENDERER_CACHE_DIRECTORY', $_ENV)) {
+                throw new InvalidConfigurationProvided("Missing .env parameter : 'RENDERER_CACHE_DIRECTORY'.");
             }
         }
     }
