@@ -1,5 +1,5 @@
 /assets/templates/
-/memory/cache/proxies/*
+/memory/cache/proxies/
 /memory/database.sqlite
 /public/bootstrap-5.3.3-dist/
 /public/css/
