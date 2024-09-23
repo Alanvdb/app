@@ -2,15 +2,17 @@
 
 namespace AlanVdb\Model\Entity;
 
+use AlanVdb\Validator\Definition\ValidatorFactoryInterface;
+
 abstract class AbstractEntity extends \AlanVdb\ORM\Entity\AbstractEntity
 {
     protected ValidatorFactory $validatorFactory;
     protected array $errors = [];
     protected array $validators = [];
 
-    public function __construct()
+    public function __construct(ValidatorFactoryInterface $validatorFactory)
     {
-        $this->validatorFactory = new ValidatorFactory();
+        $this->validatorFactory = $validatorFactory;
     }
 
     public function getErrors() : array

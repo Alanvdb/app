@@ -4,12 +4,7 @@ namespace AlanVdb\Model\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-class UserManager
+class UserManager extends AbstractManager
 {
-    protected EntityManagerInterface $entityManager;
     
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
 }

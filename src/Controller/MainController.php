@@ -9,11 +9,14 @@ class MainController extends AbstractController
 {
     public function home() : ResponseInterface
     {
-        return $this->createResponse($this->twig->render('home.twig.php'));
+        $document = $this->twig->render('home.twig', $this->getCommonTemplateParams());
+        return $this->createResponse($document);
     }
 
-    public function login() : ResponseInterface
+    protected function getCommonTemplateParams() : array
     {
-        return $this->createResponse($this->twig->render('login.twig.php'));
+        return [
+            'uriGenerator' => $this->request->getAttribute('uriGenerator')
+        ];
     }
 }

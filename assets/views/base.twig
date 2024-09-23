@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="{% block language %}en{% endblock %}">
+<head>
+    <title>
+        {% block documentTitle %}
+            Untitled document
+        {% endblock %}
+    </title>
+
+    {% block metaTags %}
+        <meta charset="{{ _charset }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% endblock %}
+
+    {% block stylesheets %}
+    {% endblock %}
+
+    {% block scripts %}
+    {% endblock %}
+
+    <style>
+        {% block style %}
+        {% endblock %}
+    </style>
+</head>
+
+{% block bodyTag %}
+<body>
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block main %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block footerScripts %}
+{% endblock %}
+</body>
+</html>

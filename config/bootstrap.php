@@ -2,26 +2,61 @@
 
 namespace App;
 
-use AlanVdb\App\Configuration\Factory\DotEnvLoaderFactory;
+use Dotenv\Dotenv;
 use AlanVdb\Dispatcher\Factory\DispatcherFactory;
-use AlanVdb\Middleware\RouterMiddleware;
 use AlanVdb\Middleware\ModuleLoaderMiddleware;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\ServerRequest;
 use AlanVdb\Router\Factory\RouterFactory;
 use AlanVdb\ORM\Manager\Factory\DoctrineEntityManagerFactory;
-use AlanVdb\View\Factory\TwigFactory;
+use AlanVdb\Renderer\Factory\TwigFactory;
 
 
 const ROOT = __DIR__ . DIRECTORY_SEPARATOR . '..';
 
 require ROOT . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-(new DotEnvLoaderFactory())->createDotEnvLoader()->load(ROOT);
+
+// .env loading
+
+Dotenv::createImmutable(ROOT)->load();
+
+const REQUIRED_VARS = [
+    'DEBUG_MODE',
+    'ROUTES_CONFIG',
+    'DB_DRIVER',
+    'ENTITY_DIRECTORIES',
+    'MODEL_PROXY_NAMESPACE',
+    'MODEL_PROXY_DIRECTORY',
+    'TEMPLATES_DIRECTORY',
+    'ACTIVATE_TEMPLATE_CACHE'
+];
+
+const DB_DRIVER_PARAMS = [
+    'sqlite' => ['DB_PATH'],
+    'mysql' => ['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASSWORD']
+];
+
+foreach (REQUIRED_VARS as $varName) {
+    if (!array_key_exists($varName, $_ENV)) {
+        throw new InvalidConfigurationProvided("Missing .env parameter : '$varName'.");
+    }
+}
+
+foreach (DB_DRIVER_PARAMS[$_ENV['DB_DRIVER']] as $varName) {
+    if (!array_key_exists($varName, $_ENV)) {
+        throw new InvalidConfigurationProvided("Missing .env parameter : '$varName'.");
+    }
+}
+
+if (filter_var($_ENV['ACTIVATE_TEMPLATE_CACHE'], FILTER_VALIDATE_BOOLEAN)) {
+    if (!array_key_exists('RENDERER_CACHE_DIRECTORY', $_ENV)) {
+        throw new InvalidConfigurationProvided("Missing .env parameter : 'RENDERER_CACHE_DIRECTORY'.");
+    }
+}
 
 
-
-// DOCTRINE
+// doctrine
 
 $dbDriver = 'pdo_' . $_ENV['DB_DRIVER'];
 
@@ -47,7 +82,7 @@ $entityManager = (new DoctrineEntityManagerFactory())->createEntityManager(
 
 
 
-// DISPATCH
+// dispatch
 
 $request       = ServerRequest::fromGlobals();
 $httpFactory   = new HttpFactory();
@@ -55,12 +90,11 @@ $routerFactory = new RouterFactory();
 
 $twig = (new TwigFactory())->createRenderer(
     $_ENV['TEMPLATES_DIRECTORY'],
-    filter_var($_ENV['ACTIVATE_TEMPLATE_CACHE'], FILTER_VALIDATE_BOOLEAN),
-    $_ENV['RENDERER_CACHE_DIRECTORY']
+    filter_var($_ENV['ACTIVATE_TEMPLATE_CACHE'], FILTER_VALIDATE_BOOLEAN) ? $_ENV['RENDERER_CACHE_DIRECTORY'] : null
 );
 
 $dispatcher = (new DispatcherFactory())->createDispatcher([
-    new RouterMiddleware(require 'routes.php', $routerFactory),
+    $routerFactory->createRouterMiddleware(require 'routes.php'),
     new ModuleLoaderMiddleware(
         $httpFactory,
         $httpFactory,

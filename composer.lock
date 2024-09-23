@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7190d4fe64a5083bda5c570b2326ca97",
+    "content-hash": "cd2945372a7d59e12cfb971a88a2e84d",
     "packages": [
         {
             "name": "alanvdb/middleware-dispatcher",
@@ -93,16 +93,16 @@
         },
         {
             "name": "alanvdb/router",
-            "version": "v0.4.1",
+            "version": "v0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Alanvdb/router.git",
-                "reference": "bb30580c4ede9bc618a103fac915e3a2451a4390"
+                "reference": "946eb97695bdf17cceb8f23d08b65b8e0ab5b9cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Alanvdb/router/zipball/bb30580c4ede9bc618a103fac915e3a2451a4390",
-                "reference": "bb30580c4ede9bc618a103fac915e3a2451a4390",
+                "url": "https://api.github.com/repos/Alanvdb/router/zipball/946eb97695bdf17cceb8f23d08b65b8e0ab5b9cf",
+                "reference": "946eb97695bdf17cceb8f23d08b65b8e0ab5b9cf",
                 "shasum": ""
             },
             "require": {
@@ -130,9 +130,86 @@
             "description": "Basic PHP router using PSR.",
             "support": {
                 "issues": "https://github.com/Alanvdb/router/issues",
-                "source": "https://github.com/Alanvdb/router/tree/v0.4.1"
+                "source": "https://github.com/Alanvdb/router/tree/v0.5.1"
             },
-            "time": "2024-09-18T14:08:51+00:00"
+            "time": "2024-09-23T16:51:12+00:00"
+        },
+        {
+            "name": "alanvdb/twig-factory",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Alanvdb/twig-factory.git",
+                "reference": "b48bfc9d88fb964ec8fa56c39c7878d22e2112e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Alanvdb/twig-factory/zipball/b48bfc9d88fb964ec8fa56c39c7878d22e2112e3",
+                "reference": "b48bfc9d88fb964ec8fa56c39c7878d22e2112e3",
+                "shasum": ""
+            },
+            "require": {
+                "twig/twig": "^3.14"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlanVdb\\Renderer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "alanvdb",
+                    "email": "alanvdb.coder@gmail.com"
+                }
+            ],
+            "description": "Personal Twig factory",
+            "support": {
+                "issues": "https://github.com/Alanvdb/twig-factory/issues",
+                "source": "https://github.com/Alanvdb/twig-factory/tree/v0.1.1"
+            },
+            "time": "2024-09-23T17:49:02+00:00"
+        },
+        {
+            "name": "alanvdb/validators",
+            "version": "v0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Alanvdb/validators.git",
+                "reference": "ab085ddadfebc8218411f93b9e78b9e5d2b55585"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Alanvdb/validators/zipball/ab085ddadfebc8218411f93b9e78b9e5d2b55585",
+                "reference": "ab085ddadfebc8218411f93b9e78b9e5d2b55585",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlanVdb\\Validator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "alanvdb",
+                    "email": "alanvdb.coder@gmail.com"
+                }
+            ],
+            "description": "PHP validator library",
+            "support": {
+                "issues": "https://github.com/Alanvdb/validators/issues",
+                "source": "https://github.com/Alanvdb/validators/tree/v0.1"
+            },
+            "time": "2024-09-23T18:08:39+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -1561,16 +1638,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v7.1.4",
+            "version": "v7.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "b61e464d7687bb7e8f677d5031c632bf3820df18"
+                "reference": "86e5296b10e4dec8c8441056ca606aedb8a3be0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/b61e464d7687bb7e8f677d5031c632bf3820df18",
-                "reference": "b61e464d7687bb7e8f677d5031c632bf3820df18",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/86e5296b10e4dec8c8441056ca606aedb8a3be0a",
+                "reference": "86e5296b10e4dec8c8441056ca606aedb8a3be0a",
                 "shasum": ""
             },
             "require": {
@@ -1638,7 +1715,7 @@
                 "psr6"
             ],
             "support": {
-                "source": "https://github.com/symfony/cache/tree/v7.1.4"
+                "source": "https://github.com/symfony/cache/tree/v7.1.5"
             },
             "funding": [
                 {
@@ -1654,7 +1731,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-12T09:59:40+00:00"
+            "time": "2024-09-17T09:16:35+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -1734,16 +1811,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v7.1.4",
+            "version": "v7.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "1eed7af6961d763e7832e874d7f9b21c3ea9c111"
+                "reference": "0fa539d12b3ccf068a722bbbffa07ca7079af9ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/1eed7af6961d763e7832e874d7f9b21c3ea9c111",
-                "reference": "1eed7af6961d763e7832e874d7f9b21c3ea9c111",
+                "url": "https://api.github.com/repos/symfony/console/zipball/0fa539d12b3ccf068a722bbbffa07ca7079af9ee",
+                "reference": "0fa539d12b3ccf068a722bbbffa07ca7079af9ee",
                 "shasum": ""
             },
             "require": {
@@ -1807,7 +1884,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v7.1.4"
+                "source": "https://github.com/symfony/console/tree/v7.1.5"
             },
             "funding": [
                 {
@@ -1823,7 +1900,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-15T22:48:53+00:00"
+            "time": "2024-09-20T08:28:38+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -2451,16 +2528,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v7.1.4",
+            "version": "v7.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "6cd670a6d968eaeb1c77c2e76091c45c56bc367b"
+                "reference": "d66f9c343fa894ec2037cc928381df90a7ad4306"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/6cd670a6d968eaeb1c77c2e76091c45c56bc367b",
-                "reference": "6cd670a6d968eaeb1c77c2e76091c45c56bc367b",
+                "url": "https://api.github.com/repos/symfony/string/zipball/d66f9c343fa894ec2037cc928381df90a7ad4306",
+                "reference": "d66f9c343fa894ec2037cc928381df90a7ad4306",
                 "shasum": ""
             },
             "require": {
@@ -2518,7 +2595,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v7.1.4"
+                "source": "https://github.com/symfony/string/tree/v7.1.5"
             },
             "funding": [
                 {
@@ -2534,7 +2611,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-12T09:59:40+00:00"
+            "time": "2024-09-20T08:28:38+00:00"
         },
         {
             "name": "symfony/var-exporter",

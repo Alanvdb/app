@@ -1,4 +1,10 @@
-/memory/
+/assets/templates/
+/memory/cache/proxies/*
+/memory/database.sqlite
+/public/bootstrap-5.3.3-dist/
+/public/css/
+/public/img/
+/public/js/
 /vendor/
 .gitignore
 todo.md

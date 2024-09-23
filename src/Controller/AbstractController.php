@@ -30,4 +30,10 @@ abstract class AbstractController
         }
         return $response->withBody($view)->withHeader('Content', 'text/html');
     }
+
+    protected function continue(string $uri) : ResponseInterface
+    {
+        $response = $this->responseFactory->createResponse(100);
+        return $response->withHeader('Location', $uri);
+    }
 }
