@@ -56,7 +56,7 @@ if (filter_var($_ENV['ACTIVATE_TEMPLATE_CACHE'], FILTER_VALIDATE_BOOLEAN)) {
 }
 
 
-// doctrine
+// Doctrine entity manager
 
 $dbDriver = 'pdo_' . $_ENV['DB_DRIVER'];
 
@@ -81,17 +81,19 @@ $entityManager = (new DoctrineEntityManagerFactory())->createEntityManager(
 );
 
 
-
-// dispatch
-
-$request       = ServerRequest::fromGlobals();
-$httpFactory   = new HttpFactory();
-$routerFactory = new RouterFactory();
+// Twig renderer
 
 $twig = (new TwigFactory())->createRenderer(
     $_ENV['TEMPLATES_DIRECTORY'],
     filter_var($_ENV['ACTIVATE_TEMPLATE_CACHE'], FILTER_VALIDATE_BOOLEAN) ? $_ENV['RENDERER_CACHE_DIRECTORY'] : null
 );
+
+
+// Dispatch
+
+$request       = ServerRequest::fromGlobals();
+$httpFactory   = new HttpFactory();
+$routerFactory = new RouterFactory();
 
 $dispatcher = (new DispatcherFactory())->createDispatcher([
     $routerFactory->createRouterMiddleware(require 'routes.php'),
@@ -105,7 +107,7 @@ $dispatcher = (new DispatcherFactory())->createDispatcher([
 $response = $dispatcher->handle($request);
 
 
-// EMIT RESPONSE
+// Emitt response
 
 http_response_code($response->getStatusCode());
 
