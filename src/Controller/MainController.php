@@ -7,9 +7,10 @@ use Psr\Http\Message\StreamInterface;
 
 class MainController extends AbstractController
 {
-    public function home() : ResponseInterface
+    public function index() : ResponseInterface
     {
-        $document = $this->twig->render('home.twig', $this->getCommonTemplateParams());
+        $params = $this->getCommonTemplateParams();
+        $document = $this->twig->render('home.twig', $params);
         return $this->createResponse($document);
     }
 
