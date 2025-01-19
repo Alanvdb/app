@@ -26,7 +26,7 @@ class ModuleLoaderMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($request->getAttribute('matchedRoute', false) === false) {
-            throw new RuntimeException(sprintf("Missing request attribute : 'matchedRoute'."));
+            throw new RuntimeException("Missing request attribute : 'matchedRoute'.");
         }
         $route = $request->getAttribute('matchedRoute');
         list($controllerClass, $method) = $route->getTarget();
