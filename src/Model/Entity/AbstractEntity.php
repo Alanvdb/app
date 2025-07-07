@@ -6,7 +6,7 @@ use AlanVdb\Validator\Definition\ValidatorFactoryInterface;
 
 abstract class AbstractEntity extends \AlanVdb\ORM\Entity\AbstractEntity
 {
-    protected ValidatorFactory $validatorFactory;
+    public ValidatorFactoryInterface $validatorFactory;
     protected array $errors = [];
     protected array $validators = [];
 

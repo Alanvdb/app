@@ -154,7 +154,7 @@ class Blog
 After creating or updating your entities, run the following command to generate the database schema:
 
 ```bash
-bin/doctrine orm:schema-tool:create
+bin/doctrine.php orm:schema-tool:create
 ```
 
 ### Update the Schema (If Needed)
@@ -162,7 +162,7 @@ bin/doctrine orm:schema-tool:create
 If you modify an entity, update the database schema with:
 
 ```bash
-bin/doctrine orm:schema-tool:update --force
+bin/doctrine.php orm:schema-tool:update --force
 ```
 
 

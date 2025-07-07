@@ -1,10 +1,8 @@
 /assets/templates/
-/assets/views/bootstrap/
-/assets/views/pico/
-/assets/views/svg/
+/assets/views/old/
 /memory/cache/proxies/
+/memory/seeders/
 /memory/database.sqlite
-/public/bootstrap-5.3.3-dist/
 /public/css/
 /public/img/
 /public/js/

@@ -2,38 +2,49 @@
 
 namespace AlanVdb\Controller;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
-use AlanVdb\Router\Definition\UriGeneratorInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Twig\Environment as TwigEnvironment;
+
+use AlanVdb\Router\UriGeneratorResolver;
 
 abstract class AbstractController
 {
-    public function __construct(
-        protected ServerRequestInterface   $request,
-        protected ResponseFactoryInterface $responseFactory,
-        protected StreamFactoryInterface   $streamFactory,
-        protected EntityManagerInterface   $entityManager,
-        protected TwigEnvironment          $twig
-    ) {}
+    protected ContainerInterface $container;
+    protected ServerRequestInterface $request;
+    protected $session;
+    protected $env;
 
-    protected function createResponse(string|StreamInterface $view, int $code = 200) : ResponseInterface
+    public function __construct(ContainerInterface $container)
     {
-        $response = $this->responseFactory->createResponse($code);
-
-        if (is_string($view)) {
-            $view = $this->streamFactory->createStream($view);
+        foreach(['request', 'session', 'env'] as $attribute) {
+            $this->$attribute = $container->get($attribute);
         }
-        return $response->withBody($view)->withHeader('Content', 'text/html');
+        $this->container = $container;
     }
 
-    protected function continue(string $uri) : ResponseInterface
+    protected function render(string $template, array $params = []): string
     {
-        $response = $this->responseFactory->createResponse(100);
-        return $response->withHeader('Location', $uri);
+        return $this->container->get('renderer')->render($template, $params);
+    }
+
+    protected function view(string|StreamInterface $body, int $status = 200): ResponseInterface
+    {        
+        if (is_string($body)) {
+            $streamFactory = $this->container->get('streamFactory');
+            $body = $streamFactory->createStream($body);
+        }
+        return $this->container->get('responseFactory')->createResponse($status)
+            ->withBody($body)
+            ->withHeader('Content-Type', 'text/html; charset=UTF-8');
+    }
+
+    protected function getCommonTemplateParams() : array
+    {
+        return [
+            'session' => $this->container->get('session'),
+            'uriGenerator' => $this->container->get('uriGenerator')
+        ];
     }
 }

@@ -7,17 +7,12 @@ use Psr\Http\Message\StreamInterface;
 
 class MainController extends AbstractController
 {
+    protected const TEMPLATE_HOME = 'home.twig';
+
     public function index() : ResponseInterface
     {
         $params = $this->getCommonTemplateParams();
-        $document = $this->twig->render('home.twig', $params);
-        return $this->createResponse($document);
-    }
-
-    protected function getCommonTemplateParams() : array
-    {
-        return [
-            'uriGenerator' => $this->request->getAttribute('uriGenerator')
-        ];
+        $document = $this->render(self::TEMPLATE_HOME, $params);
+        return $this->view($document);
     }
 }

@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+
+use Doctrine\ORM\Tools\SchemaTool;
+use AlanVdb\Model\Seeder;
+
+require __DIR__.'/../config/bootstrap.php';
+
+$dbFile = dirname(__DIR__) . '/' . $container->get('env')->get('DB_PATH');
+
+if (file_exists($dbFile)) {
+    unlink($dbFile);
+}
+
+$entityManager = $container->get('entityManager');
+$schemaTool = new SchemaTool($entityManager);
+
+echo "Creating database... ";
+try {
+    $schemaTool->createSchema(
+        $entityManager->getMetadataFactory()->getAllMetadata()
+    );
+    
+    echo "Database successfully created !\n";
+} catch (Exception $e) {
+    echo "Erreur : " . $e->getMessage() . "\n";
+    exit(1);
+}
+
+$seeder = new Seeder($entityManager);
+$files = glob(dirname(__DIR__) . '/memory/seeders/*');
+
+foreach ($files as $file) {
+    $seeder->run(json_decode(file_get_contents($file)));
+}

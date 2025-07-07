@@ -4,23 +4,17 @@ namespace AlanVdb\Middleware;
 
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\StreamFactoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Twig\Environment as TwigEnvironment;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Container\ContainerInterface;
 
 use AlanVdb\Controller\AbstractController;
 use RuntimeException;
 
-class ModuleLoaderMiddleware implements MiddlewareInterface
+class RouteTargetResolverMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        protected ResponseFactoryInterface $responseFactory,
-        protected StreamFactoryInterface   $streamFactory,
-        protected EntityManagerInterface   $entityManager,
-        protected TwigEnvironment          $twig
+        protected ContainerInterface $container
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -38,16 +32,10 @@ class ModuleLoaderMiddleware implements MiddlewareInterface
                 $controllerClass
             ));
         }
-        $controller = new $controllerClass(
-            $request,
-            $this->responseFactory,
-            $this->streamFactory,
-            $this->entityManager,
-            $this->twig
-        );
+        $controller = new $controllerClass($this->container);
 
         if (!method_exists($controller, $method)) {
-            throw new RuntimeException(sprintf("Method does not exists %s::%s().", $controller, $method));
+            throw new RuntimeException(sprintf("Method does not exists %s::%s().", get_class($controller), $method));
         }
 
         return $controller->$method($route->getParams());

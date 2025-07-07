@@ -5,6 +5,7 @@ namespace AlanVdb\Model\Entity;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Column;
+use AlanVdb\Validator\Definition\ValidatorFactoryInterface;
 
 use InvalidArgumentException;
 
@@ -21,12 +22,13 @@ class User extends AbstractEntity
     #[Column(type: 'string', length: 2000)]
     public ?string $password = null;
 
-    public function __construct()
+    public function __construct(ValidatorFactoryInterface $validatorFactory)
     {
+        parent::__construct($validatorFactory);
         $this->validators = [
             'username' => [
                 $this->validatorFactory->createStringLengthValidator(4, 32),
-                $this->validatorFactory->createRegexValidator('`^[a-zA-Z0-9\-_]+$`', 'can contain letters, digits, hyphen and underscore')
+                $this->validatorFactory->createRegexPatternValidator('`^[a-zA-Z0-9\-_]+$`', 'can contain letters, digits, hyphen and underscore')
             ],
             'email' => [
                 $this->validatorFactory->createEmailValidator(),

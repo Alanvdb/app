@@ -1,0 +1,17 @@
+{% extends 'base.twig' %}
+
+{% block documentTitle %}Profile{% endblock %}
+
+{% block main %}
+<main>
+    <ol>
+        <li><a href="{{ uriGenerator.generateUri('home') }}">Home</a></li>
+        <li>Profile</li>
+    </ol>
+    <h1>Profile</h1>
+    <ul>
+        <li>Username :  {{ user.username }}</li>
+        <li>Email :  {{ user.email }}</li>
+    </ul>
+</main>
+{% endblock %}
